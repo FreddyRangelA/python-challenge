@@ -4,19 +4,23 @@ import csv
 #open resource folder
 mainPyBank_csv = os.path.join("..","PyBank","Homework_03-Python_PyBank_Resources_budget_data.csv")
 
+monthsCount = 0
+profitTotal = 0
+previousChange=0
+averageChange_list=[]
+avrageChange = 0
+monthChange_List = []
+averageChangerRow=0
+
 with open(mainPyBank_csv) as csv_file:
     csv_reader =csv.reader(csv_file,delimiter=",")
     
     csv_header = next(csv_file)
     #print(f"Header: {csv_header}")
     
-    monthsCount = 0
-    profitTotal = 0
-    previousChange=0
-    averageChange_list=[]
-    avrageChange = 0
-    monthChange_List = []
-
+   
+    maxaverage=0
+    minAverage=0
     for row in csv_reader:
         
         monthsCount +=1
@@ -24,31 +28,31 @@ with open(mainPyBank_csv) as csv_file:
 
         #Average in Change
         averageChange = int(row[1])-previousChange #substracting the previous value to the next value
+        if averageChange > maxaverage:
+            maxaverage = averageChange
+            dateMaxaverage=row[0]
+        else:
+            if averageChange< minAverage:
+                minAverage =averageChange
+                dateMinAverage=row[0]
+
         #print(averageChange)
         previousChange= int(row[1]) #assigning previous value to the current row
-        averageChange_list.append(averageChange)
-        print (sum(averageChange_list))
-           
-       
-        #monthChange_List = [monthChange_List]+[row[0]]
-       
+        if monthsCount != 1:
+            averageChange_list=averageChange_list+[averageChange]
+        
+    revenueAverage=round((sum(averageChange_list)/len(averageChange_list)), 2) 
+    maxMonth = max(averageChange_list)
+    minMonth = min(averageChange_list)
 
 
-        #revenueAverage=sum(averageChange_list)/len(averageChange_list)
-
-
-
-
-
-        #print(row[1])
-   
-         
-           
-        #print(row)
+    print(f'Finacial Analisys')
+    print(f'-----------------------')
     print(f'the total months: {monthsCount}')
     print(f'profit total: {profitTotal}')
-    #print(f'Average in Change: {revenueAverage}')
-
+    print(f'Average in Change: {revenueAverage}')
+    print(f'Greatest Increase in Profits: {dateMaxaverage}, {maxMonth}')
+    print(f'Greatest Decress in Profits: {dateMinAverage}, {minMonth}')
 
 
 
