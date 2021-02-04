@@ -28,17 +28,18 @@ with open(mainPyBank_csv) as csv_file:
 
         #Average in Change
         averageChange = int(row[1])-previousChange #substracting the previous value to the next value
+
+         # Greatest Increase in Profits
         if averageChange > maxaverage:
             maxaverage = averageChange
             dateMaxaverage=row[0]
-        else:
+        else:                               #Greatest Decress in Profits
             if averageChange< minAverage:
                 minAverage =averageChange
                 dateMinAverage=row[0]
 
-        #print(averageChange)
-        previousChange= int(row[1]) #assigning previous value to the current row
-        if monthsCount != 1:
+        previousChange= int(row[1]) #assigning the current row to the previous value
+        if monthsCount != 1:        #excluding the first month value since there is no changes
             averageChange_list=averageChange_list+[averageChange]
         
     revenueAverage=round((sum(averageChange_list)/len(averageChange_list)), 2) 
@@ -51,8 +52,8 @@ with open(mainPyBank_csv) as csv_file:
     print(f'the total months: {monthsCount}')
     print(f'profit total: {profitTotal}')
     print(f'Average in Change: {revenueAverage}')
-    print(f'Greatest Increase in Profits: {dateMaxaverage}, {maxMonth}')
-    print(f'Greatest Decress in Profits: {dateMinAverage}, {minMonth}')
+    print(f'Greatest Increase in Profits: {dateMaxaverage} {maxMonth}')
+    print(f'Greatest Decress in Profits: {dateMinAverage} {minMonth}')
 
 
 
