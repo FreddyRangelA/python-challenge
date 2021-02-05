@@ -10,6 +10,8 @@ with open(mainPyPoll) as csv_file:
     votesCount=0
     candidateCount=0
     candidateName_list=[]
+    candidateName_dict={}
+ 
     for row in csv_reader:
         votesCount +=1 #giveme the number of total votes
         
@@ -18,24 +20,29 @@ with open(mainPyPoll) as csv_file:
         
         #returns a list with the candidates
         if len(candidateName_list)==0:                                #Adding the first name to the list.
-            
-            candidateName_list= candidateName_list+[candidateName] 
+
+            candidateName_list= candidateName_list+[candidateName]
+            candidateName_dict[candidateName] =1
             
         else:                                                         # condition that avoids repeating names.
             if candidateName not in candidateName_list:
                 candidateName_list= candidateName_list+[candidateName]
-
-        #if candidateName in row[2]:
-            #candidateCount= row[2].count(candidateName)
-
-    
-
-
+                candidateName_dict[candidateName]=1
+            else:
+                candidateName_dict[candidateName]+=1
+       
     print(f'Election Results')
     print(f'-----------------------')
     print(f'Total voters: {votesCount}')
-    print(f'-----------------------')
-    print(f' {candidateName_list}')
-    print(f' {candidateCount}')
-    #print(f'Greatest Increase in Profits: {dateMaxaverage} {maxMonth}')
-    #print(f'Greatest Decress in Profits: {dateMinAverage} {minMonth}')
+    print(f'-----------------------')   
+
+    for candidateName in candidateName_list:
+ 
+        votesPercent =round((candidateName_dict[candidateName]/votesCount)*100,4)
+        print(f'{candidateName}:  {votesPercent}%  ({candidateName_dict[candidateName]})')
+    
+    winner=max(candidateName_dict, key=candidateName_dict.get)
+    print(f'-----------------------')   
+    print(f'winner: {winner}')
+    print(f'-----------------------')   
+    
